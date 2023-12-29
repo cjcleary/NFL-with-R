@@ -74,5 +74,13 @@ rushing_2010 <- 2010 %>%
   map(scrape_rush_data, 
       .progress = T)
 
+# write rds file of all years
+library(here)
+write_rds(dat1, "Data Files/NFL_rushing_statistics1950-2023.rds")
 
+# write csv file of all years
+write.csv(dat1, "Data Files/NFL_rushing_statistics1950-2023.csv",
+          row.names = F,
+          na = "")
 
+tibble(col_names = colnames(dat1))
