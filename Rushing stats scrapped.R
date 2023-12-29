@@ -75,7 +75,7 @@ rushing_2010 <- 2010 %>%
       .progress = T)
 
 # write rds file of all years
-library(here)
+
 write_rds(dat1, "Data Files/NFL_rushing_statistics1950-2023.rds")
 
 # write csv file of all years
@@ -83,4 +83,26 @@ write.csv(dat1, "Data Files/NFL_rushing_statistics1950-2023.csv",
           row.names = F,
           na = "")
 
-tibble(col_names = colnames(dat1))
+# define dictionary for data
+nfl_rushing_dictionary <- tibble(column_names = colnames(dat1),
+                                 dictionary = c("NFL season",
+                                                "name of player",
+                                                "team adjusted for 2023 team names",
+                                                "player position",
+                                                "player age",
+                                                "player games played in season",
+                                                "player games started in season",
+                                                "player rush attempts (total) in season",
+                                                "player rush yards (total) in season",
+                                                "player rush touchdowns (total) in season",
+                                                "player longest rush of season",
+                                                "player rush yards per rushing attempt in season",
+                                                "player rush yards per game in season",
+                                                "player fumbles (total) in season",
+                                                "player first downs (total) in season",
+                                                "player rushing succcess rate per pfr in season"))
+
+# write rds file of dictionary
+nfl_rushing_dictionary %>% 
+  write_rds(file = "Data Files/NFL_rushing_statistics_dictionary.rds")
+       
