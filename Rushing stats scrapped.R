@@ -16,6 +16,9 @@ nfl_rush_colnames_current <- c("rank", "player_name", "team", "age", "position",
 # function for scrapping data
 scrape_rush_data <- function(year) {
   
+  # print what year is being scraped
+  print(paste(year, "now being scrapped..."))
+  
   # define url
   url <- paste0("https://www.pro-football-reference.com/years/", year, "/rushing.htm")
   
@@ -24,7 +27,7 @@ scrape_rush_data <- function(year) {
     as.data.frame()
   
   # logic because there was a change in the column counts after 1993
-  if(year < 1993) {
+  if(year <= 1993) {
     colnames(x) <- nfl_rush_colnames_old
     
     dat <- x %>% 
@@ -60,16 +63,16 @@ scrape_rush_data <- function(year) {
            team = fct(team),
            position = fct(position),
            player_name = nflreadr::clean_player_names(player_name))
-  
-  # because sportsref is smart and doesn't want their servers demolished by scrapers
-  Sys.sleep(time = 5)
 }
 
-full_rushing_dat <- 1950:2023 %>% 
-  map(possibly(scrape_rush_data), 
-      .progress = T)
 
-bind_rows(full_rushing_dat)
+# use purrr::map() to map the years you want to scrape
+# to note, scraping more than 30+ years is not recommended as
+# sportsref will lock you out of their server (error 429)
+# not a big deal, do it in pieces or use the provided data set
+rushing_2010 <- 2010 %>% 
+  map(scrape_rush_data, 
+      .progress = T)
 
 
 
