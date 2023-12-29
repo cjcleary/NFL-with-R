@@ -62,14 +62,13 @@ scrape_rush_data <- function(year) {
            player_name = nflreadr::clean_player_names(player_name))
   
   # because sportsref is smart and doesn't want their servers demolished by scrapers
-  Sys.sleep(time = 5)
 }
 
 full_rushing_dat <- 1950:2023 %>% 
   map(possibly(scrape_rush_data), 
       .progress = T)
 
-bind_rows(full_rushing_dat)
+bind_rows(full_rushing_dat) %>% 
+  distinct(year)
 
-
-
+full_rushing_dat %>% write_rds("first_part.rds")
