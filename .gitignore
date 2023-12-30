@@ -1,44 +1,5 @@
-
-.Rproj.user/147687EE/sources/prop/DA58E088
-.Rproj.user/147687EE/sources/prop/DA58E088
-.Rproj.user/147687EE/sources/session-ccddd987/466CCE61
-.Rproj.user/147687EE/sources/session-ccddd987/466CCE61-contents
-.Rproj.user/147687EE/sources/session-ccddd987/58A8C717
-.Rproj.user/147687EE/sources/session-ccddd987/58A8C717-contents
-.Rproj.user/147687EE/sources/session-ccddd987/C7678E7E
-.Rproj.user/147687EE/sources/session-ccddd987/C7678E7E-contents
-.Rproj.user/147687EE/sources/session-ccddd987/D6C0F6F1-contents
-.Rproj.user/147687EE/sources/prop/DA58E088
-.Rproj.user/147687EE/sources/session-ccddd987/246147D5-contents
-.Rproj.user/147687EE/sources/session-ccddd987/466CCE61
-.Rproj.user/147687EE/sources/session-ccddd987/466CCE61-contents
-.Rproj.user/147687EE/sources/session-ccddd987/470DC404-contents
-.Rproj.user/147687EE/sources/session-ccddd987/52CA6EC4-contents
-.Rproj.user/147687EE/sources/session-ccddd987/861AD407-contents
-.Rproj.user/147687EE/sources/session-ccddd987/98C1DA3D
-.Rproj.user/147687EE/sources/session-ccddd987/98C1DA3D-contents
-.Rproj.user/147687EE/sources/session-ccddd987/D8CBB3F7
-.Rproj.user/147687EE/sources/session-ccddd987/D8CBB3F7-contents
-.Rproj.user/147687EE/sources/session-ccddd987/466CCE61-contents
-.Rproj.user/147687EE/sources/prop/DA58E088
 .Rproj.user
-.Rproj.user/147687EE/pcs/source-pane.pper
-.Rproj.user/147687EE/pcs/windowlayoutstate.pper
-.Rproj.user/147687EE/sources/prop/INDEX
-.Rproj.user/shared/notebooks/paths
-Data Files/NFL_rushing_statistics1950-2023.csv
-Data Files/NFL_rushing_statistics1950-2023.rds
-Data Files/NFL_rushing_statistics_dictionary.rds
-Data Files/NFL_rushing_statistics1950-2023.rds
-.Rproj.user/147687EE/pcs/source-pane.pper
-.Rproj.user/147687EE/pcs/windowlayoutstate.pper
-.Rproj.user/147687EE/sources/prop/INDEX
-.Rproj.user/shared/notebooks/paths
-Data Files/NFL_rushing_statistics1950-2023.csv
-Data Files/NFL_rushing_statistics1950-2023.rds
-Data Files/NFL_rushing_statistics_dictionary.rds
-.Rproj.user/147687EE/pcs/source-pane.pper
-.Rproj.user/147687EE/pcs/windowlayoutstate.pper
-.Rproj.user/147687EE/sources/prop/INDEX
-.Rproj.user/shared/notebooks/paths
-code/nfl_rushing_dat_viz.R
+.Rhistory
+.RData
+.Ruserdata
+*.rds
