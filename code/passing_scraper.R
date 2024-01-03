@@ -148,7 +148,7 @@ passing_dat <- passing_stats_total %>%
 unique(passing_dat$team)
 
 passing_dat_2023 <-  passing_dat %>% 
-  filter(year == "2023",
+  filter(year == "2016",
          position == "QB") %>% 
   group_by(team) %>% 
   summarize(pass_tds = sum(passing_tds)) %>% 
@@ -165,9 +165,11 @@ passing_dat_2023 %>%
   scale_fill_identity(aesthetics = c("color", "fill")) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.05)),
                      breaks = scales::pretty_breaks(n = 6)) +
-  labs(y = NULL) +
+  labs(y = NULL,
+       x = "Passing Touchdowns") +
+  theme_classic() +
   theme(axis.text.y = element_nfl_logo(),
-        legend.position = NULL)
+        legend.position = NULL) 
 
 
 
