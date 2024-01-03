@@ -139,6 +139,7 @@ passing_stats_total <- 1970:2023 %>%
                       rate_del)),
       .progress = T)
 
+# turn into a data frame
 passing_dat <- passing_stats_total %>% 
   bind_rows() %>% 
   as_tibble() %>% 
@@ -146,4 +147,26 @@ passing_dat <- passing_stats_total %>%
 
 unique(passing_dat$team)
 
+passing_dat_2023 <-  passing_dat %>% 
+  filter(year == "2023",
+         position == "QB") %>% 
+  group_by(team) %>% 
+  summarize(pass_tds = sum(passing_tds)) %>% 
+  left_join(nflfastR::teams_colors_logos[,c("team_abbr",
+                                            "team_color",
+                                            "team_color2")],
+            by = c("team" = "team_abbr")) 
+  
+passing_dat_2023 %>% 
+  ggplot(aes(y = fct_reorder(team, pass_tds),
+             x = pass_tds)) +
+  geom_col(aes(color = team_color2, 
+               fill = team_color)) +
+  scale_fill_identity(aesthetics = c("color", "fill")) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.05)),
+                     breaks = scales::pretty_breaks(n = 6)) +
+  theme(axis.text.y = element_nfl_logo(),
+        legend.position = NULL)
+
+library(nflplotR)
 
