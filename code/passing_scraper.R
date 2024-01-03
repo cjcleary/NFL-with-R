@@ -86,7 +86,7 @@ col_names_1994_to_2005 <- c(base_passing_col_names,
                             "passing_success_rate",
                             col_names_1993_or_less)
 
-# change in 2006 as well
+# change in 2006 as well, append is a base R function
 col_names_2006_to_present <- append(col_names_1994_to_2005, 
                                     "espn_qbr", 
                                     after = 24)
@@ -165,8 +165,9 @@ passing_dat_2023 %>%
   scale_fill_identity(aesthetics = c("color", "fill")) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.05)),
                      breaks = scales::pretty_breaks(n = 6)) +
+  labs(y = NULL) +
   theme(axis.text.y = element_nfl_logo(),
         legend.position = NULL)
 
-library(nflplotR)
+
 
