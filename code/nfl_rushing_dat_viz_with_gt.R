@@ -9,6 +9,7 @@ library(gtExtras)
 rush_1 <- read_csv("Data Files/nfl-rushing-statistics/NFL_rushing_statistics1950-2023.csv")
 str(rush_1)
 
+unique(rush_1$position)
 # clean data file
 rush_2 <- rush_1 %>% 
   # we are only interested in when the nfl merged in 1970
@@ -36,28 +37,27 @@ rush_2 <- rush_1 %>%
   mutate(team = factor(team))
 
 str(rush_2)
+rush_2 %>% 
+  group_by(player_name) %>% 
+  summarize(names(which.max(table(team))))
+
+
 
 # explore the data, let's see top 5 leading rushers per decade
 rb_by_decade_tbl <- rush_2 %>% 
   group_by(decade, player_name) %>% 
   filter(rush_attempts > 100) %>% 
   summarize(max = sum(rush_yards),
-            team = last(team)) %>% 
+            team = names(which.max(table(team)))) %>% 
   slice_max(n = 5, order_by = max) %>% 
   ungroup() %>% 
   select(
     decade,
     player = player_name,
     team,
-    max
-  ) %>% 
-  left_join(nflfastR::teams_colors_logos[,c("team_abbr",
-                                            "team_wordmark")],
-            by = c("team" = "team_abbr")) %>% 
-  relocate(team_wordmark, .after = team) %>% 
+    max) %>%  
   gt(groupname_col =  "decade") %>%
-  tab_header(title = "NFL Top 5 Rushing Leaders since 1970", 
-             subtitle = "Minimum 100 rushing attempts per decade") %>% 
+  tab_header(title = "NFL Top 5 Rushing Leaders since 1970") %>% 
   tab_style(locations = cells_title(groups = c("title")),
             style = list(cell_text(weight = "bolder",
                                    size = px(25),
