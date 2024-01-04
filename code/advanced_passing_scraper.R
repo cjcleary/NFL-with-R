@@ -154,3 +154,13 @@ advanced_passing_dat <- advanced_passing %>%
 
 str(advanced_passing_dat)
 unique(advanced_passing_dat$team)
+
+# write data file to csv
+advanced_passing_dat %>% 
+  write.csv("Data Files/nfl-passing-statistics/NFL_adv_passing_statistics_2018to2023.csv",
+            row.names = F,
+            na = "")
+
+# write data file to rds
+advanced_passing_dat %>% 
+  write_rds("Data Files/nfl-passing-statistics/NFL_adv_passing_statistics_2018to2023.rds")
