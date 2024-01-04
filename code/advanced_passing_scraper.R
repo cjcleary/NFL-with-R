@@ -30,7 +30,7 @@ pressure_tbl_names <- c("rank", "player_name", "team", "age", "position", "games
 play_type_tbl_names <- c("rank", "player_name", "team", "age", "position", "games_played", 
                          "games_started", "passes_completed", "passes_attempted", "passing_yards", 
                          "rpo_plays", "rpo_total_yards", "rpo_pass_attempts", "rpo_passing_yards", 
-                         "rpo_rush_attempts", "rop_rushing_yards", "playaction_pass_attempts", 
+                         "rpo_rush_attempts", "rpo_rushing_yards", "playaction_pass_attempts", 
                          "playaction_passing_yards")
 
 # for cleaner code, we are going to define a custom function to clean up the dataframes
@@ -151,4 +151,6 @@ advanced_passing_dat <- advanced_passing %>%
   mutate(position = 
            case_when(position == "" | position == "WR/QB" ~ "QB",
                      TRUE ~ position)) 
+
+str(advanced_passing_dat)
 unique(advanced_passing_dat$team)
