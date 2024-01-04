@@ -81,10 +81,10 @@ col_names_1993_or_less <- c(base_passing_col_names,
                             "game_winning_drives")
 
 # 1994-2005 names were similar but added in a few new ones
-col_names_1994_to_2005 <- c(base_passing_col_names,
-                            "passing_first_downs",
-                            "passing_success_rate",
-                            col_names_1993_or_less)
+col_names_1994_to_2005 <- append(col_names_1993_or_less,
+                                 c("passing_first_downs",
+                                   "passing_success_rate"),
+                                 after = 16)
 
 # change in 2006 as well, append is a base R function
 col_names_2006_to_present <- append(col_names_1994_to_2005, 
@@ -92,6 +92,8 @@ col_names_2006_to_present <- append(col_names_1994_to_2005,
                                     after = 24)
 
 # now we can define a passing scraper function
+# generally, i use base R functions for these...with package development
+# in mind and not requiring to import too many of the {tidyverse} packages
 scrape_passing_stats <- function(year) {
   
   # print what year is being scraped
@@ -133,43 +135,83 @@ scrape_passing_stats <- function(year) {
 }
 
 # testing showed everything looked good so we can move forward
+# scrape from 1970 to 2023
+# put the custom function in purrr::possibly() and purrr::slowly() to
+# 1- (possibly()) maintain scrapped data if the function fails for any reason
+# 2- (slowly()) slow down rvest::read_html() to avoid http server 429 issues
 passing_stats_total <- 1970:2023 %>% 
   map(possibly(slowly(quiet = F,
                       scrape_passing_stats,
-                      rate_del)),
+                      rate_delay(10))),
       .progress = T)
 
-# turn into a data frame
+# turn the list into a data frame
 passing_dat <- passing_stats_total %>% 
   bind_rows() %>% 
   as_tibble() %>% 
+  # Cardinals moved from phoenix (PHO) to glendale (ARI) in 1994
+  # Boston (BOS) Patriots became New England (NE) Patriots in 1971
+  mutate(team = case_when(team == "PHO" ~ "ARI",
+                          team == "BOS" ~ "NE",
+                          TRUE ~ team)) %>% 
+  # lastly, if a player is on multiple teams, change to "MULTI" instead
+  # of "2TM", or "3TM" etc.
+  mutate(team = case_when(grepl("TM", team) ~ "MULTI",
+                          TRUE ~ team)) %>% 
   mutate(across(.cols = 10:33, as.numeric)) 
 
-unique(passing_dat$team)
+# some sanity checks....
+# first, make sure there are 33 teams (32 NFL teams + 1 for "MULTI")
+length(unique(passing_dat$team))
 
-passing_dat_2023 <-  passing_dat %>% 
-  filter(year == "2016",
-         position == "QB") %>% 
-  group_by(team) %>% 
-  summarize(pass_tds = sum(passing_tds)) %>% 
-  left_join(nflfastR::teams_colors_logos[,c("team_abbr",
-                                            "team_color",
-                                            "team_color2")],
-            by = c("team" = "team_abbr")) 
-  
-passing_dat_2023 %>% 
-  ggplot(aes(y = fct_reorder(team, pass_tds),
-             x = pass_tds)) +
-  geom_col(aes(color = team_color2, 
-               fill = team_color)) +
-  scale_fill_identity(aesthetics = c("color", "fill")) +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.05)),
-                     breaks = scales::pretty_breaks(n = 6)) +
-  labs(y = NULL,
-       x = "Passing Touchdowns") +
-  theme_classic() +
-  theme(axis.text.y = element_nfl_logo(),
-        legend.position = NULL) 
+# check the team names in alphabetical order
+sort(unique(passing_dat$team))
 
+# check positions....
+passing_dat %>% 
+  group_by(position) %>% 
+  tally(sort = T) %>% 
+  print(n = nrow(.))
+
+# for some reason, there are positions as ""
+passing_dat %>% 
+  filter(position == "")
+
+# one of these was baker mayfield in 2022
+passing_dat %>% 
+  filter(grepl("Mayfield", player_name),
+         year == "2022") %>% 
+  select(1:8)
+
+# double checking, these are quarterbacks...
+# so going to manually fix
+# check our code before we assign it to anything
+passing_dat %>% 
+  mutate(position = case_when(position == "" ~ "QB",
+                              TRUE ~ position)) %>% 
+  group_by(position) %>% 
+  tally(sort = T) %>% 
+  print(n = nrow(.))
+
+# looks good let's assign it! 
+passing_dat <- passing_dat %>% 
+  mutate(position = case_when(position == "" ~ "QB",
+                              TRUE ~ position)) 
+
+# check that baker's 2022 season position is fixed
+passing_dat %>% 
+  filter(grepl("Mayfield", player_name),
+         year == "2022") %>% 
+  select(1:8)
+
+# yay!
+# now let's write these to files
+passing_dat %>% 
+  write.csv("Data Files/nfl-passing-statistics/NFL_passing_statistics_1970to2023.csv",
+            row.names = F,
+            na = "")
+
+passing_dat %>% 
+  write_rds("Data Files/nfl-passing-statistics/NFL_passing_statistics_1970to2023.rds")
 
 
