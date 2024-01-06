@@ -139,10 +139,13 @@ advanced_passing <- 2018:2023 %>%
                       rate_delay(10))),
       .progress = T)
 
-# change dataframe into 
+# change into a dataframe
+
 advanced_passing_dat <- advanced_passing %>% 
   bind_rows() %>% 
   as_tibble() %>% 
+  # fix percentage values
+  mutate(across(contains("percentage"), ~str_remove_all(., "%"))) %>% 
   # change values into numeric
   mutate(across(.cols = 6:43,
                 as.numeric)) %>% 
@@ -151,9 +154,6 @@ advanced_passing_dat <- advanced_passing %>%
   mutate(position = 
            case_when(position == "" | position == "WR/QB" ~ "QB",
                      TRUE ~ position)) 
-
-str(advanced_passing_dat)
-unique(advanced_passing_dat$team)
 
 # write data file to csv
 advanced_passing_dat %>% 
