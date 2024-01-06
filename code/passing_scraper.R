@@ -22,7 +22,7 @@ scrape_passing_colnames <- function(year) {
 }
 
 # define rate delay for purrr::slowly()
-rate_del <- rate_delay(20)
+rate_del <- rate_delay(10)
 
 # get and store column names for data
 passing_colnames_dat <- 1970:2023 %>% 
@@ -128,10 +128,11 @@ scrape_passing_stats <- function(year) {
     mutate(team = nflreadr::clean_team_abbrs(team),
            player_name = str_remove(player_name, "\\*"),
            player_name = str_remove(player_name, "\\+"),
-           year = year, .before = player_name,
+           season = year, .before = player_name,
            team = fct(team),
            position = fct(position),
-           player_name = nflreadr::clean_player_names(player_name))
+           player_name = nflreadr::clean_player_names(player_name)) |>
+    select(-rank)
 }
 
 # testing showed everything looked good so we can move forward
@@ -142,7 +143,7 @@ scrape_passing_stats <- function(year) {
 passing_stats_total <- 1970:2023 %>% 
   map(possibly(slowly(quiet = F,
                       scrape_passing_stats,
-                      rate_delay(10))),
+                      rate_del)),
       .progress = T)
 
 # turn the list into a data frame
@@ -158,7 +159,16 @@ passing_dat <- passing_stats_total %>%
   # of "2TM", or "3TM" etc.
   mutate(team = case_when(grepl("TM", team) ~ "MULTI",
                           TRUE ~ team)) %>% 
-  mutate(across(.cols = 10:33, as.numeric)) 
+  mutate(across(.cols = 9:32, as.numeric)) %>%  
+  separate(quarterback_record,
+           into = c("quarterback_wins",
+                    "quarterback_losses",
+                    "quarterback_ties"),
+           sep = "-") %>% 
+  mutate(quarterback_wins = as.numeric(quarterback_wins),
+         quaterback_losses = as.numeric(quarterback_losses),
+         quaterback_ties = as.numeric(quarterback_ties))
+
 
 # some sanity checks....
 # first, make sure there are 33 teams (32 NFL teams + 1 for "MULTI")
@@ -201,7 +211,7 @@ passing_dat <- passing_dat %>%
 # check that baker's 2022 season position is fixed
 passing_dat %>% 
   filter(grepl("Mayfield", player_name),
-         year == "2022") %>% 
+         season == "2022") %>% 
   select(1:8)
 
 # yay!
