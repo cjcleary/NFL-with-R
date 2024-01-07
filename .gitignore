@@ -1,28 +1,4 @@
-*.Rproj.user
-*.Rhistory
-*.RData
-*.Ruserdata
-*.pper
-*.Rproj.user/shared/notebooks/paths
-*.windowlayoutstate.pper
-*.workbench-pane.pper
-*./sources/prop/INDEX
-*.Rproj.user/shared/notebooks/paths
-.Rproj.user/147687EE/pcs/windowlayoutstate.pper
-.Rproj.user/147687EE/pcs/workbench-pane.pper
-.Rproj.user/147687EE/sources/prop/INDEX
-.Rproj.user/shared/notebooks/paths
-.Rproj.user/147687EE/pcs/windowlayoutstate.pper
 .Rproj.user
-.Rproj.user/147687EE/pcs/source-pane.pper
-.Rproj.user/147687EE/pcs/windowlayoutstate.pper
-.Rproj.user/147687EE/sources/prop/INDEX
-.Rproj.user/shared/notebooks/paths
-.Rproj.user/147687EE/pcs/source-pane.pper
-.Rproj.user/147687EE/pcs/windowlayoutstate.pper
-.Rproj.user/147687EE/sources/prop/INDEX
-.Rproj.user/shared/notebooks/paths
-C:\Users\cjcle\Cleary Files\Kansas\Research\1- R Data\NFL with R\.Rproj.user\147687EE\pcs\source-pane.pper
-C:\Users\cjcle\Cleary Files\Kansas\Research\1- R Data\NFL with R\.Rproj.user\147687EE\pcs\windowlayoutstate.pper
-C:\Users\cjcle\Cleary Files\Kansas\Research\1- R Data\NFL with R\.Rproj.user\147687EE\sources\prop\INDEX
-C:\Users\cjcle\Cleary Files\Kansas\Research\1- R Data\NFL with R\.Rproj.user\shared\notebooks\paths
+.Rhistory
+.RData
+.Ruserdata
